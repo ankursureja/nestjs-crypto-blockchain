@@ -2,7 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-# Nest.js Redis-based Crypto Rates App
+# Nest.js Crypto Blockchain
 
 This application is a Nest.js backend service designed to fetch, store, and distribute cryptocurrency rates using Redis for caching and WebSockets for real-time updates.
 
@@ -24,7 +24,7 @@ This application is a Nest.js backend service designed to fetch, store, and dist
 ### Installation
 
 1. Clone the repository:
-   `git clone git@github.com:razlevio/crypto-backend.git`
+   `git clone https://github.com/ankursureja/nestjs-crypto-blockchain.git`
 
 2. Install dependencies:
    `npm install`
@@ -36,7 +36,7 @@ This application is a Nest.js backend service designed to fetch, store, and dist
 The application exposes several endpoints for interacting with cryptocurrency rates and Redis data:
 
 - **GET `/last`**: Fetch the last stored crypto rates from Redis. This endpoint is rate-limited to maximum of 30 calls per hour to prevent abuse.
-- **CRON `EVERY_10_MINUTES`**: Automatically fetches latest cryptocurrency rates from coinlayer api every 10 minutes and stores them in Redis that deployed in Upstash.
+- **CRON `EVERY_MINUTE`**: Automatically fetches latest cryptocurrency rates from coinlayer api every 10 minutes and stores them in Redis that deployed in Upstash.
 
 ### WebSocket Events
 
@@ -61,12 +61,11 @@ The application exposes several endpoints for interacting with cryptocurrency ra
 ## Docker and Kuberenets CMD's
 
 ```bash
-$ docker build -t razlevio/crypto-backend:latest .
-$ docker run -p 4000:4000 --env-file .env razlevio/crypto-backend
-$ docker push razlevio/crypto-backend:latest
+$ docker build -t crypto-backend:latest .
+$ docker run -p 3000:3000 --env-file .env crypto-backend
+$ docker push crypto-backend:latest
 $ kubectl create secret generic crypto-redis-secret --from-literal=UPSTASH_REDIS_REST_TOKEN='<your-upstash-redis-rest-token>'
 $ kubectl create secret generic crypto-coinlayer-secret --from-literal=COINLAYER_API_KEY='<your-coinlayer-api-key>'
-$ kubectl apply -f k8s/crypto-backend-deployment.yaml
 $ kubectl apply -f k8s/crypto-backend-service.yaml
 $ kubectl apply -f k8s/ingress.yaml
 ```
